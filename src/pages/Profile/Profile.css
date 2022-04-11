@@ -1,0 +1,194 @@
+.profile {
+  margin: 1rem;
+}
+.profile header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.prof_btn {
+  cursor: pointer;
+  font-family: inherit;
+  font-weight: 600;
+  background-color: #00cc66;
+  color: #fff;
+  padding: 0.4rem 0.7rem;
+  border-radius: 1rem;
+}
+.profile main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 3rem;
+}
+.personalDet :nth-child(1) {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.personalDet {
+  width: 30%;
+}
+.personalDet form,
+.details {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-top: 3rem;
+}
+.personalDet form input {
+  padding: 0.75rem;
+}
+.personalDet form label {
+  padding: 0.75rem 0;
+}
+.personalDet form input {
+  background-color: #fff;
+  border: #fff;
+  border-radius: 1rem;
+}
+.personalDet form button {
+  margin-top: 2rem;
+  grid-column: 1/-1;
+}
+.details h2 {
+  font-weight: 500;
+  font-size: 1.4rem;
+}
+.details p {
+  background-color: #fff;
+  border: #fff;
+  border-radius: 1rem;
+  padding: 0.75rem;
+  font-family: inherit;
+  font-size: 0.9rem;
+}
+.listing-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  grid-column: 1/-1;
+  background-color: #fff;
+  margin-top: 1rem;
+  padding: 1rem;
+  border-radius: 1rem;
+  transition: 0.5s ease-in;
+}
+.listing-link svg {
+  transition: 0.5s ease-in;
+}
+.listing-link:hover svg {
+  fill: #fff;
+}
+.listing-link:hover {
+  color: #fff;
+  background-color: rgba(0, 0, 0, 0.904);
+}
+@media screen and (max-width: 1300px) {
+  .personalDet {
+    width: 34%;
+  }
+}
+@media screen and (max-width: 1050px) {
+  .personalDet {
+    width: 40%;
+  }
+}
+@media screen and (max-width: 950px) {
+  .personalDet {
+    width: 50%;
+  }
+}
+@media screen and (max-width: 900px) {
+  .personalDet {
+    width: 50%;
+  }
+  .personalDet div h1 {
+    font-size: 1.8rem;
+  }
+  .details h2 {
+    font-size: 1.3rem;
+  }
+}
+@media screen and (max-width: 650px) {
+  .profile header h1 {
+    font-size: 1.3rem;
+  }
+  .personalDet {
+    width: 60%;
+  }
+  .personalDet div h1 {
+    font-size: 1rem;
+  }
+  .details h2 {
+    font-size: 0.9rem;
+    padding: 0.5rem 0;
+  }
+  .details p {
+    font-size: 0.7rem;
+    padding: 0.5rem;
+  }
+  .personalDet form input {
+    padding: 0.5rem;
+    font-size: 0.7rem;
+  }
+  .personalDet form label {
+    padding: 0.5rem 0;
+    font-size: 0.9rem;
+  }
+  .prof_btn {
+    padding: 0.3rem 0.6rem;
+    font-size: 0.6rem;
+  }
+  .listing-link {
+    font-size: 0.9rem;
+    padding: 0.8rem 1.2rem;
+    font-weight: 600;
+  }
+}
+@media screen and (max-width: 650px) {
+  .listing-link {
+    font-size: 0.7rem;
+    font-weight: 500;
+  }
+}
+@media screen and (max-width: 400px) {
+  .personalDet {
+    width: 63%;
+  }
+}
+@media screen and (max-width: 300px) {
+  .profile header h1 {
+    font-size: 0.9rem;
+  }
+  .personalDet {
+    width: 72%;
+  }
+  .personalDet div h1 {
+    font-size: 0.8rem;
+  }
+  .details h2 {
+    font-size: 0.7rem;
+    padding: 0.3rem 0;
+  }
+  .details p {
+    font-size: 0.5rem;
+    padding: 0.3rem;
+  }
+  .personalDet form input {
+    padding: 0.3rem;
+    font-size: 0.5rem;
+  }
+  .personalDet form label {
+    padding: 0.3rem 0;
+    font-size: 0.7rem;
+  }
+  .prof_btn {
+    padding: 0.2rem 0.5rem;
+    font-size: 0.5rem;
+  }
+  .listing-link {
+    font-size: 0.5rem;
+    font-weight: 600;
+  }
+}

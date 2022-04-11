@@ -1,0 +1,162 @@
+.cat {
+  margin: 2rem;
+}
+.listItem {
+  display: grid;
+  max-width: max-content;
+  grid-template-columns: 1fr 2fr;
+  column-gap: 2rem;
+  margin-top: 2rem;
+  padding: 2rem;
+  position: relative;
+  transition: 0.5s ease-in;
+}
+.listItem:hover {
+  transform: scale(1.02);
+  box-shadow: 0px 8px 10px 8px rgba(201, 200, 200, 0.486);
+}
+.house-img {
+  max-width: 16rem;
+  max-height: 10rem;
+  object-fit: cover;
+  border-radius: 1rem;
+}
+.listDet {
+  max-height: 10rem;
+  max-width: max-content;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+li {
+  list-style: none;
+}
+.listDet p {
+  font-weight: 600;
+}
+.location {
+  font-size: 0.8rem;
+}
+.name {
+  font-size: 1.6rem;
+}
+.price {
+  color: #00cc66;
+}
+.bedrooms {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.bedrooms p {
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+.deleteIcon {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+}
+@media screen and (max-width: 1050px) {
+  .listItem {
+    padding: 1.7rem;
+  }
+  .listItem:hover {
+    transform: scale(1.02);
+  }
+}
+@media screen and (max-width: 950px) {
+  .listItem {
+    padding: 1.7rem;
+  }
+  .bedrooms p {
+    font-size: 0.9rem;
+  }
+  .name {
+    font-size: 1.4rem;
+  }
+  .location {
+    font-size: 0.7rem;
+  }
+  .house-img {
+    max-width: 14rem;
+    max-height: 8rem;
+  }
+}
+@media screen and (max-width: 650px) {
+  .deleteIcon {
+    max-width: 0.8rem;
+    max-height: 0.8rem;
+    top: 0.4rem;
+    right: 0.4rem;
+  }
+  .cat {
+    margin: 1.2rem;
+  }
+  .listItem {
+    padding: 1.2rem;
+    column-gap: 0.8rem;
+    grid-template-columns: 1fr 1fr;
+  }
+  .bedrooms p {
+    font-size: 0.46rem;
+  }
+  .name {
+    font-size: 0.7rem;
+  }
+  .price {
+    font-size: 0.5rem;
+  }
+  .location {
+    font-size: 0.5rem;
+  }
+  .house-img {
+    max-width: 9rem;
+    max-height: 6rem;
+  }
+  .bedrooms img {
+    max-width: 0.7rem;
+    max-height: 0.7rem;
+  }
+}
+@media screen and (max-width: 450px) {
+  .cat {
+    margin: 1rem;
+  }
+  .house-img {
+    max-width: 8rem;
+    max-height: 5rem;
+  }
+  .listItem {
+    column-gap: 0.8rem;
+    grid-template-columns: 1fr 2fr;
+  }
+}
+@media screen and (max-width: 400px) {
+  .house-img {
+    max-width: 7rem;
+    max-height: 4rem;
+  }
+}
+@media screen and (max-width: 300px) {
+  .house-img {
+    grid-column: 1/-1;
+    max-width: 14rem;
+    max-height: 5rem;
+  }
+  .listDet {
+    grid-column: 1/-1;
+  }
+  .listItem {
+    row-gap: 1rem;
+  }
+  .listDet {
+    justify-content: space-between;
+  }
+  .listDet p {
+    margin-bottom: 0.4rem;
+  }
+  .cat {
+    margin: 0.8rem;
+  }
+}

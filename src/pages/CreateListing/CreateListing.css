@@ -1,0 +1,302 @@
+.create-list-form {
+  height: calc(100vh - 11rem);
+  overflow-y: auto;
+  margin: 2rem;
+}
+.active-btn {
+  background-color: #00cc66;
+  color: #fff;
+}
+.non-active-btn {
+  background-color: #fff;
+  color: #2c2c2c;
+}
+.create-list-form main {
+  font-family: inherit;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 600;
+  margin-top: 1.5rem;
+}
+.create-list-form form label {
+  display: block;
+  margin-bottom: 0.5rem;
+}
+.create-list-form form button {
+  cursor: pointer;
+  padding: 0.75rem 2rem;
+  border-radius: 1rem;
+  font-weight: 600;
+  transition: 0.5s ease;
+}
+.sell-rent-button,
+.parking-sp,
+.form-name,
+.form-bed-bath,
+.form-furnished,
+.form-address,
+.form-offer,
+.form-reg-price,
+.form-disc-price,
+.form-img-up {
+  margin-bottom: 1.5rem;
+}
+#type,
+#parking,
+#furnished,
+#offer {
+  margin-right: 1rem;
+}
+.create-list-form form input,
+textarea {
+  background-color: #fff;
+  border-radius: 1rem;
+  padding: 0.75rem;
+  border: #fff;
+}
+.form-name input,
+textarea {
+  width: 25rem;
+}
+.create-list-form form input:focus,
+textarea:focus {
+  outline: none;
+}
+.form-bed-bath {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+.form-bed,
+.form-bath {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.form-bed-bath input {
+  width: 4rem;
+}
+textarea {
+  font-family: inherit;
+  font-weight: 500;
+}
+.form-reg-price div,
+.form-disc-price div {
+  display: flex;
+  align-items: center;
+}
+.form-reg-price input,
+.form-disc-price input {
+  width: 10rem;
+  margin-right: 1rem;
+}
+.form-img-up input::-webkit-file-upload-button {
+  background-color: #00cc66;
+  color: #fff;
+  border: #fff;
+  border-radius: 1rem;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  margin-right: 1rem;
+}
+.form-img-up p {
+  font-weight: 300;
+  font-size: 0.9rem;
+  margin-bottom: 0.8rem;
+}
+.form-img-up input {
+  font-weight: inherit;
+  max-width: 7rem;
+  max-height: 2rem;
+  padding: 0 !important;
+  margin-right: 0.3rem;
+}
+.img-inp {
+  display: flex;
+}
+.file-names {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.3rem;
+}
+.file-names p {
+  display: inline;
+  font-weight: 400;
+  font-size: 0.6rem;
+}
+.file-names img {
+  cursor: pointer;
+  margin-left: 0.3rem;
+  width: 0.5rem;
+  height: 0.5rem;
+}
+.flex {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+}
+.img-inp {
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+.crlist-submit-btn {
+  width: 25rem;
+  background-color: #00cc66;
+  color: #fff;
+  border-radius: 1rem;
+  border: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.5s ease-in;
+}
+.crlist-submit-btn:hover {
+  transform: scale(1.01);
+}
+@media screen and (max-width: 1300px) {
+  .create-list-form header h1 {
+    font-size: 2rem;
+  }
+}
+@media screen and (max-width: 1050px) {
+  .create-list-form header h1 {
+    font-size: 1.7rem;
+  }
+}
+@media screen and (max-width: 950px) {
+  .create-list-form main {
+    margin-top: 3rem;
+  }
+}
+@media screen and (max-width: 650px) {
+  .img-inp {
+    flex-direction: column;
+  }
+  .file-names p {
+    display: inline;
+    font-size: 0.3rem !important;
+  }
+  .create-list-form form label {
+    font-size: 0.9rem;
+    font-weight: 500;
+  }
+  .create-list-form form input,
+  .create-list-form form textarea,
+  .create-list-form form button {
+    font-size: 0.7rem;
+    font-weight: 500;
+  }
+  .create-list-form form button {
+    padding: 0.5rem 1.2rem;
+    font-weight: 500;
+  }
+  .create-list-form header h1 {
+    font-size: 1.2rem;
+    font-weight: 500;
+  }
+  .form-name input,
+  textarea,
+  .form-img-up input,
+  .crlist-submit-btn {
+    width: 15rem;
+    font-weight: 500;
+  }
+  .form-reg-price input,
+  .form-disc-price input {
+    width: 7rem;
+    font-weight: 500;
+  }
+  .form-bed-bath input {
+    width: 3rem;
+    font-weight: 500;
+  }
+  .form-reg-price p,
+  .form-disc-price p {
+    font-size: 0.8rem;
+    font-weight: 500;
+  }
+  .form-img-up p {
+    font-size: 0.7rem;
+  }
+  .file-names {
+    gap: 0.2rem;
+  }
+  .form-img-up input {
+    max-width: 6rem;
+    max-height: 2rem;
+    margin-bottom: 0.2rem;
+  }
+  .file-names img {
+    width: 0.3rem;
+    height: 0.3rem;
+  }
+  .img-inp span {
+    font-size: 0.7rem;
+  }
+}
+@media screen and (max-width: 300px) {
+  .create-list-form form label {
+    font-size: 0.7rem;
+    font-weight: 500;
+  }
+  .create-list-form form input,
+  .create-list-form form textarea,
+  .create-list-form form button {
+    font-size: 0.5rem;
+    font-weight: 500;
+  }
+  .create-list-form form button {
+    padding: 0.4rem 0.8rem;
+    font-weight: 500;
+  }
+  .create-list-form header h1 {
+    font-size: 1rem;
+    font-weight: 500;
+  }
+  .form-name input,
+  textarea,
+  .form-img-up input,
+  .crlist-submit-btn {
+    width: 10rem;
+    font-weight: 500;
+  }
+  .form-reg-price input,
+  .form-disc-price input {
+    width: 7rem;
+    font-weight: 500;
+  }
+  .form-bed-bath input {
+    width: 3rem;
+    font-weight: 500;
+  }
+  .form-reg-price p,
+  .form-disc-price p {
+    font-size: 0.6rem;
+    font-weight: 500;
+  }
+  .form-img-up p {
+    font-size: 0.5rem;
+  }
+  .form-img-up input::-webkit-file-upload-button {
+    margin-right: 0.4rem;
+    padding: 0.4rem 0.8rem;
+  }
+  .form-img-up input {
+    max-width: 4.5rem;
+    max-height: 2rem;
+    margin-bottom: 0.2rem;
+  }
+  .file-names {
+    gap: 0.1rem;
+  }
+  .file-names img {
+    width: 0.2rem;
+    height: 0.2rem;
+  }
+  .file-names p {
+    font-size: 0.2rem !important;
+  }
+  .img-inp span {
+    font-size: 0.5rem;
+  }
+}

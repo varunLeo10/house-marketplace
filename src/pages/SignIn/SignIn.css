@@ -1,0 +1,97 @@
+.sign_in-container {
+  margin: 1rem;
+}
+.sign_in-form {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.sign_in-form input {
+  display: block;
+  border: #ffff;
+  padding: 0.8rem;
+  border-radius: 10px;
+  width: 30rem;
+  text-indent: 2rem;
+  margin-bottom: 2rem;
+}
+.inputPass {
+  position: relative;
+}
+.show-hide {
+  position: absolute;
+  right: 2%;
+  top: 14%;
+  width: 1.3rem;
+  height: 1.3rem;
+}
+.sign_in-bar {
+  margin-top: 1rem;
+  display: flex;
+  align-items: center;
+}
+.sign_in-bar p {
+  margin-right: 1rem;
+  font-size: 1.3rem;
+  font-weight: 700;
+  display: inline;
+}
+.sign_in-bar svg {
+  cursor: pointer;
+  background-color: #00cc66;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+}
+.OAuth {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.OAuth p {
+  margin-top: 1rem;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+.OAuth button {
+  cursor: pointer;
+  margin-top: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  background-color: #fff;
+  border-radius: 50%;
+  border: #fff;
+}
+.OAuth img {
+  width: 1.4rem;
+  height: 1.4rem;
+}
+@media screen and (max-width: 450px) {
+  .sign_in-form input {
+    width: 20rem;
+  }
+  .show-hide {
+    width: 0.8rem;
+    height: 0.8rem;
+    right: 3%;
+    top: 18%;
+  }
+}
+@media screen and (max-width: 300px) {
+  .sign_in-form input {
+    width: 15rem;
+  }
+  .sign_in-bar svg {
+    width: 20px;
+    height: 20px;
+  }
+  .sign_in-bar p {
+    margin-right: 0.6rem;
+    font-size: 0.9rem;
+  }
+}
