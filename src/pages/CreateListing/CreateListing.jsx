@@ -2,13 +2,23 @@ import PropTypes from "prop-types";
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
+import {
+  getStorage,
+  ref,
+  uploadBytesResumable,
+  getDownloadURL,
+} from "firebase/storage";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import { db } from "../../firebase.config";
 import Spinner from "../../components/Spinner";
 import closeIcon from "../../assets/jpg/close.png";
 import "./CreateListing.css";
 import { toast } from "react-toastify";
 function CreateListing() {
+  const API_KEY = process.env.REACT_APP_API_KEY;
+  const today = useRef(null);
   const mounted = useRef(true);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [formData, setFormData] = useState({
     type: "rent",
     name: "",
@@ -28,6 +38,13 @@ function CreateListing() {
   const navigate = useNavigate();
   useEffect(() => {
     if (mounted) {
+      const now = new Date();
+      let dd = now.getDate();
+      let mm = now.getMonth() + 1;
+      let yyyy = now.getFullYear();
+      if (dd < 10) dd = "0" + dd;
+      if (mm < 10) mm = "0" + mm;
+      today.current = `${dd}${mm}${yyyy}`;
       onAuthStateChanged(auth, (user) => {
         if (user) {
           setFormData({ ...formData, userRef: user.uid });
@@ -40,10 +57,76 @@ function CreateListing() {
     return () => (mounted.current = false);
     //eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mounted]);
-  const onSubmit = (e) => {
-    e.preventDefault();
-    formData.offer === false &&
-      setFormData({ ...formData, discountedPrice: 0 });
+  const onSubmit = async (e) => {
+    try {
+      setLoading(true);
+      e.preventDefault();
+      const res = await fetch(
+        `https://maps.googleapis.com/maps/api/geocode/json?address=${formData.address}&key=${API_KEY}`
+      );
+      const data = await res.json();
+      let lat;
+      let lng;
+      let location;
+      if (data.status === "ZERO_RESULTS") {
+        toast.error("Please enter a correct address");
+        setLoading(false);
+        return;
+      } else {
+        lat = data.results[0].geometry.location.lat ?? 0;
+        lng = data.results[0].geometry.location.lng ?? 0;
+        location = data.results[0].formatted_address;
+      }
+      const imgUrls = await Promise.all(
+        formData.images.map((file) => fileUpload(file[0]))
+      );
+      console.log(imgUrls);
+      const uploadData = {
+        ...formData,
+        timestamp: serverTimestamp(),
+        geolocation: { lat, lng },
+        imgUrls,
+        location,
+      };
+      delete uploadData.address;
+      delete uploadData.images;
+      delete uploadData.longitude;
+      delete uploadData.latitude;
+      !uploadData.offer && delete uploadData.discountedPrice;
+      console.log(uploadData);
+      const docRef = await addDoc(collection(db, "listings"), uploadData);
+      console.log(docRef);
+      setLoading(false);
+      toast.success("Listing successfully created!");
+      navigate(`/category/${uploadData.type}/${docRef.id}`);
+    } catch (error) {
+      setLoading(false);
+      toast(error);
+      return;
+    }
+  };
+  const fileUpload = async (file) => {
+    return new Promise((resolve, reject) => {
+      const storage = getStorage();
+      const fileName = `${auth.currentUser.uid}-${today.current}-${file.name}`;
+      const reference = ref(storage, fileName);
+      const storageRef = ref(storage, `images/${fileName}`);
+      const uploadTask = uploadBytesResumable(storageRef, file);
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {},
+        (error) => {
+          console.log(error);
+          reject("File Upload failed Please limit file size to 2MB");
+        },
+        () => {
+          console.log("done");
+          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+            resolve(downloadURL);
+          });
+        }
+      );
+    });
   };
   const changeState = (key, value) => {
     if (key === "parking" || key === "furnished" || key === "offer") {
@@ -91,9 +174,16 @@ function CreateListing() {
   const onMutate = (e) => {
     if (e.target.id === "images") {
       if (e.target.files.length > 0) {
+        if (formData.images.length === 6) {
+          toast.error("Maximum six images allowed");
+          return;
+        }
         const arr = formData.images;
-        arr.push(e.target.files);
-        changeState(e.target.id, arr);
+        const found = arr.find((el) => el[0].name === e.target.files[0].name);
+        if (!found) {
+          arr.push(e.target.files);
+          changeState(e.target.id, arr);
+        }
       }
     } else {
       changeState(e.target.id, e.target.value);
@@ -197,7 +287,11 @@ function CreateListing() {
                   min={50}
                   max={750000000}
                 />
-                {formData.type === "rent" && <p>$/Month</p>}
+                {formData.type === "rent" ? (
+                  <p>&#8377;/Month</p>
+                ) : (
+                  <p>&#8377;</p>
+                )}
               </div>
             </div>
             {formData.offer && (
@@ -212,7 +306,7 @@ function CreateListing() {
                     min={1}
                     max={750000000}
                   />
-                  <p>$</p>
+                  <p>&#8377;</p>
                 </div>
               </div>
             )}
@@ -229,7 +323,6 @@ function CreateListing() {
                   onChange={onMutate}
                   max="6"
                   accept=".jpg,.png,.jpeg"
-                  multiple
                   required
                 />
 

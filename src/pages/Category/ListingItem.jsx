@@ -12,14 +12,15 @@ function ListingItem({ listing, onDelete }) {
       >
         <img
           className="house-img"
-          src={listing.data.imageUrls[0]}
+          src={listing.data.imgUrls[0]}
           alt={`${listing.data.name}`}
         />
         <div className="listDet">
           <p className="location">{listing.data.location}</p>
           <p className="name">{listing.data.name}</p>
           <p className="price">
-            {`$ ${listing.data.regularPrice.toLocaleString()}`}
+            &#8377;
+            {` ${listing.data.regularPrice.toLocaleString()}`}
             {listing.data.type === "rent" && " / Month"}
           </p>
           <div className="bedrooms">
