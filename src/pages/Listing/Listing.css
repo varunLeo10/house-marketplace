@@ -1,0 +1,255 @@
+.listing-det-page {
+  position: relative;
+  z-index: 10;
+  height: calc(100vh - 11rem);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+.listing-det {
+  margin: 2rem 0 2rem 2rem;
+  padding-right: 2rem;
+}
+.listing-det p {
+  font-size: 1.7rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+.listing-det button {
+  font-size: 0.9rem;
+  padding: 0.5rem 1rem;
+  background-color: #00cc66;
+  border: #00cc66;
+  color: #fff;
+  border-radius: 1rem;
+}
+.rent-sale-price {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+.rent-sale-price strike,
+.rent-sale-price span,
+.rent-sale-price p {
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+.rent-sale-price p {
+  margin-bottom: 0;
+}
+.rent-sale-price button {
+  margin-right: 1.5rem;
+}
+.rent-sale-price strike {
+  margin-right: 0.5rem;
+}
+.list-stats {
+  margin-bottom: 0.5rem;
+}
+.list-stats li {
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+.contact {
+  width: inherit;
+  display: flex;
+  justify-content: center;
+}
+.contact-link {
+  margin-top: 2rem;
+  width: max-content;
+  cursor: pointer;
+  background-color: #00cc66;
+  border: #00cc66;
+  border-radius: 1rem;
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: #fff;
+  padding: 1.1rem 3rem;
+  transition: 0.5s ease;
+}
+.contact-link:hover {
+  transform: scale(1.04);
+}
+.sharelink {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  top: 2%;
+  right: 1%;
+}
+.share-icon {
+  cursor: pointer;
+  background-color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+}
+.share-icon img {
+  width: 1.2em;
+  height: 1.2em;
+}
+.share-text {
+  border-radius: 1rem;
+  padding: 0.2rem 0.6rem;
+  margin-top: 1rem;
+  background-color: #fff;
+  color: #2c2c2c;
+}
+.share-text p {
+  font-size: 0.9rem;
+  margin-bottom: 0;
+}
+.Map {
+  width: 100%;
+  height: 28rem;
+}
+.listing-imgs {
+  position: relative;
+  display: flex;
+  height: 25rem;
+  width: max-content;
+  object-fit: cover;
+}
+.listing-imgs img {
+  width: 100%;
+  height: 100%;
+}
+.arrow-icons {
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  transform: translate(0, -50%);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: calc(100vw - 1.2rem);
+}
+.left,
+.right {
+  width: 2rem;
+  height: 2rem;
+  background-color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.left svg,
+.right svg {
+  width: 0.9rem;
+  height: 0.9rem;
+}
+@media screen and (max-width: 1280px) {
+  .arrow-icons {
+    width: 100vw;
+  }
+}
+@media screen and (max-width: 1050px) {
+  .listing-imgs {
+    height: 20rem;
+  }
+  .Map {
+    height: 24rem;
+  }
+}
+@media screen and (max-width: 950px) {
+  .rent-sale-price button {
+    margin-right: 1.2rem;
+  }
+}
+@media screen and (max-width: 650px) {
+  .Map {
+    height: 20rem;
+  }
+  .listing-imgs {
+    height: 17rem;
+  }
+  .listing-det p {
+    font-size: 1.4rem;
+  }
+  .share-text p {
+    font-size: 0.7rem;
+  }
+  .rent-sale-price p {
+    font-size: 1rem;
+  }
+  .rent-sale-price button {
+    margin-right: 1rem;
+  }
+  .listing-det button {
+    font-size: 0.7rem;
+  }
+  .list-stats li {
+    font-size: 1rem;
+  }
+  .left,
+  .right,
+  .share-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+  .left svg,
+  .right svg {
+    width: 0.6rem;
+    height: 0.6rem;
+  }
+  .share-icon img {
+    width: 0.8rem;
+    height: 0.8rem;
+  }
+  .contact-link {
+    padding: 0.9rem 2rem;
+    font-size: 0.9rem;
+  }
+}
+@media screen and (max-width: 300px) {
+  .Map {
+    height: 15rem;
+  }
+  .listing-imgs {
+    height: 12rem;
+  }
+  .listing-det p {
+    font-size: 0.9rem;
+  }
+  .share-text p {
+    font-size: 0.4rem;
+  }
+  .rent-sale-price p {
+    font-size: 0.7rem;
+  }
+  .rent-sale-price button {
+    margin-right: 0.5rem;
+    padding: 0.4rem 0.7rem;
+  }
+  .listing-det button {
+    font-size: 0.5rem;
+  }
+  .list-stats li {
+    font-size: 0.7rem;
+  }
+  .left,
+  .right,
+  .share-icon {
+    width: 1rem;
+    height: 1rem;
+  }
+  .left svg,
+  .right svg {
+    width: 0.3rem;
+    height: 0.3rem;
+  }
+  .share-icon img {
+    width: 0.5rem;
+    height: 0.5rem;
+  }
+  .contact-link {
+    margin-top: 1rem;
+    padding: 0.5rem 1.1rem;
+    font-size: 0.5rem;
+  }
+}

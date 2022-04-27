@@ -1,0 +1,76 @@
+.ContactPage {
+  margin: 2rem;
+}
+.ContactPage header h1 {
+  font-size: 2rem;
+}
+.ContactPage main {
+  margin-top: 2rem;
+}
+.ContactPage main h1 {
+  font-size: 1.5rem;
+  margin-bottom: 2rem;
+}
+.contact-form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.ContactPage form {
+  display: flex;
+  flex-direction: column;
+}
+.ContactPage form label {
+  justify-content: flex-start;
+  margin-bottom: 1rem;
+  font-weight: 500;
+}
+.ContactPage form textarea {
+  height: 10rem;
+  margin-bottom: 2rem;
+}
+.ContactPage form button a {
+  background-color: #00cc66;
+  border: #00cc66;
+  border-radius: 1rem;
+  color: #fff;
+  padding: 1rem 2rem;
+}
+.ContactPage form button {
+  transition: 0.5s ease;
+}
+.ContactPage form button:hover {
+  transform: scale(1.02);
+}
+@media screen and (max-width: 1050px) {
+  .ContactPage main {
+    margin-top: 1.6rem;
+  }
+  .ContactPage main h1 {
+    margin-bottom: 1.6rem;
+  }
+}
+@media screen and (max-width: 950px) {
+  .ContactPage header h1 {
+    font-size: 1.7rem;
+  }
+  .ContactPage main h1 {
+    font-size: 1.3rem;
+  }
+}
+@media screen and (max-width: 300px) {
+  .ContactPage header h1 {
+    font-size: 1rem;
+  }
+  .ContactPage main h1 {
+    font-size: 0.8rem;
+  }
+  label,
+  textarea {
+    font-size: 0.6rem;
+  }
+  .ContactPage form button a {
+    padding: 0.7rem 1rem;
+    font-size: 0.7rem;
+  }
+}

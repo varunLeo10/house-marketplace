@@ -23,28 +23,29 @@ function SignIn() {
   };
   const onSubmit = async (e) => {
     e.preventDefault();
-      try {
-        if (email.length !== 0 && password.length !== 0) {
-          setLoading(true);
-          const auth = getAuth();
-          const userCredential = await signInWithEmailAndPassword(
-            auth,
-            email,
-            password
-          );
-          setLoading(false);
-          userCredential.user && navigate("/");
-          toast.success("Logged In!");
+    try {
+      if (email.length !== 0 && password.length !== 0) {
+        setLoading(true);
+        const auth = getAuth();
+        const userCredential = await signInWithEmailAndPassword(
+          auth,
+          email,
+          password
+        );
+        setLoading(false);
+        userCredential.user && navigate("/");
+        toast.success("Logged In!");
+      } else {
+        if (email.length === 0) {
+          toast.error("Please enter email");
         } else {
-          if (email.length === 0) {
-            toast.error("Please enter email");
-          } else {
-            toast.error("Please enter password");
-          }
+          toast.error("Please enter password");
         }
-      } catch (error) {
-        toast.error("Bad user credentials!");
       }
+    } catch (error) {
+      toast.error("Bad user credentials!");
+      setLoading(false);
+    }
   };
   return (
     <>

@@ -2,10 +2,24 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useNavigate, Link } from "react-router-dom";
 import { getAuth, signOut, updateProfile } from "firebase/auth";
-import { doc, updateDoc, getDoc } from "firebase/firestore";
+import {
+  doc,
+  updateDoc,
+  getDoc,
+  collection,
+  getDocs,
+  where,
+  query,
+  orderBy,
+  deleteDoc,
+} from "firebase/firestore";
 import { db } from "../../firebase.config";
 import { ReactComponent as ArrowRightIcon } from "../../assets/svg/keyboardArrowRightIcon.svg";
 import { ReactComponent as HomeIcon } from "../../assets/svg/homeIcon.svg";
+import { ReactComponent as DeleteIcon } from "../../assets/svg/deleteIcon.svg";
+import { ReactComponent as EditIcon } from "../../assets/svg/editIcon.svg";
+import bathIcon from "../../assets/svg/bathtubIcon.svg";
+import bedIcon from "../../assets/svg/bedIcon.svg";
 import "./Profile.css";
 import Spinner from "../../components/Spinner";
 function Profile() {
@@ -65,7 +79,6 @@ function Profile() {
     setLoading(true);
     e.preventDefault();
     if (phoneNumber !== null) {
-      setLoading(true);
       if (
         phoneNumber.toString().length !== 12 &&
         phoneNumber.toString().length > 0
@@ -103,6 +116,7 @@ function Profile() {
           phoneNumber: phonenum,
         });
         toast.error("Couldn't update profile details");
+        setLoading(false);
       }
     } else {
       toast.error("Please enter Name");
@@ -178,6 +192,7 @@ function Profile() {
             )}
           </div>
         </main>
+        <UserListings />
       </div>
     </>
   );
@@ -185,12 +200,122 @@ function Profile() {
 function CreateListingLink() {
   return (
     <Link to="/create-listing" className="listing-link">
-      <HomeIcon
-      />
+      <HomeIcon />
       <span>Sell or rent your home</span>
-      <ArrowRightIcon
-      />
+      <ArrowRightIcon />
     </Link>
+  );
+}
+function UserListings() {
+  const auth = getAuth();
+  const navigate = useNavigate();
+  const [listings, setListings] = useState(null);
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    const fetchListings = async () => {
+      const q = query(
+        collection(db, "listings"),
+        where("userRef", "==", auth.currentUser.uid),
+        orderBy("timestamp", "desc")
+      );
+      const querySnap = await getDocs(q);
+      let arr = [];
+      querySnap.forEach((doc) => {
+        if (doc.exists()) {
+          arr.push({
+            id: doc.id,
+            data: doc.data(),
+          });
+        }
+      });
+      setListings(arr);
+    };
+    fetchListings();
+    setLoading(false);
+    //eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  const onDelete = async (id) => {
+    if (window.confirm("Are you sure you want to delete this listing?")) {
+      setLoading(true);
+      try {
+        await deleteDoc(doc(db, "listings", id));
+        const updListing = listings.filter((listings) => listings.id !== id);
+        setListings(updListing);
+        toast.success("This Listing has been deleted");
+      } catch (error) {
+        toast.error("Couldn't delete listing please try again");
+      }
+      setLoading(false);
+    }
+  };
+  const handleClick = (e, listing) => {
+    if (e.target.closest(".editIcon")) {
+      navigate(`/edit-listing/${listing.id}`);
+      return;
+    }
+    if (e.target.closest(".deleteIcon")) {
+      onDelete(listing.id);
+      return;
+    }
+    if (e.target.closest(".listItem")) {
+      navigate(`/category/${listing.type}/${listing.id}`);
+      return;
+    }
+  };
+  return (
+    <>
+      {loading && <Spinner />}
+      {listings && listings.length > 0 && (
+        <div className="cat">
+          <header>
+            <h1>Your Listings</h1>
+          </header>
+          <ul>
+            {listings?.map((listing) => (
+              <li key={listing.id}>
+                <div
+                  className="listItem"
+                  onClick={(e) => handleClick(e, listing)}
+                >
+                  <img
+                    className="house-img"
+                    src={listing.data.imgUrls[0]}
+                    alt={`${listing.data.name}`}
+                  />
+                  <div className="listDet">
+                    <p className="location">{listing.data.location}</p>
+                    <p className="name">{listing.data.name}</p>
+                    <p className="price">
+                      &#8377;
+                      {` ${listing.data.regularPrice.toLocaleString()}`}
+                      {listing.data.type === "rent" && " / Month"}
+                    </p>
+                    <div className="bedrooms">
+                      <img src={bedIcon} alt="bed icon" />
+                      <p>
+                        {listing.data.bedrooms} bedroom
+                        {listing.data.bedrooms > 1 ? "s" : ""}
+                      </p>
+                      <img src={bathIcon} alt="bath tub icon" />
+                      <p>
+                        {listing.data.bathrooms} bathroom
+                        {listing.data.bathrooms > 1 ? "s" : ""}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="deleteIcon">
+                    <DeleteIcon fill="rgb(231,76,60)" />
+                  </div>
+                  <div className="editIcon">
+                    <EditIcon fill="#2c2c2c" />
+                  </div>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </>
   );
 }
 export default Profile;

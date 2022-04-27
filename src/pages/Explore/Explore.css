@@ -2,8 +2,25 @@
   --height-cat: 10rem;
 }
 .Explore {
-  margin: 1rem;
   max-width: 100vw;
+  padding-right: 1rem;
+  height: calc(100vh - 11rem);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+.Explore header {
+  margin: 1rem;
+  margin-bottom: 0.5rem;
+}
+.Explore header h1 {
+  margin-bottom: 1.6rem;
+}
+.Explore header p {
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+.cat {
+  margin: 1rem;
 }
 .Explore main {
   margin-bottom: 2rem;
@@ -41,9 +58,55 @@
   font-weight: 600;
   margin-left: 0.2rem;
 }
+.exploreSlider {
+  display: flex;
+  height: 25rem;
+  width: max-content;
+  object-fit: cover;
+}
+.exploreSlider .exp-img {
+  position: relative;
+  width: 100vw;
+  height: 100%;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  transition: 1s ease-in-out;
+}
+.exploreSlider .exp-img img {
+  cursor: pointer;
+}
+.listing-imgs .exp-img {
+  position: relative;
+  width: 100vw;
+  height: 100%;
+  transition: 1s ease-in-out;
+}
+.exploreSlider img {
+  width: 100%;
+  height: 100%;
+  border-radius: 1rem;
+}
+.slider-det {
+  position: absolute;
+  top: 50%;
+  left: 20%;
+  transform: translate(-50%, -20%);
+}
+.slider-det p {
+  padding: 0.8rem 1.5rem;
+  width: fit-content;
+  margin-bottom: 0.9rem;
+  border-radius: 1rem;
+}
 @media screen and (max-width: 1050px) {
   :root {
     --height-cat: 8rem;
+  }
+  .exploreSlider {
+    height: 19rem;
+  }
+  .slider-det p {
+    padding: 0.7rem 1.4rem;
   }
   .cat-header {
     font-size: 1.3rem;
@@ -63,8 +126,22 @@
   .line {
     width: 0.165rem;
   }
+  .slider-det {
+    left: 30%;
+    transform: translate(-50%, -30%);
+  }
 }
 @media screen and (max-width: 650px) {
+  .slider-det {
+    left: 35%;
+    transform: translate(-50%, -35%);
+  }
+  .slider-det p {
+    font-size: 0.8rem;
+    padding: 0.7rem 1.3rem;
+  }
+}
+@media screen and (max-width: 450px) {
   :root {
     --height-cat: 6rem;
   }
@@ -90,6 +167,17 @@
   .cat-header {
     font-size: 0.9rem;
   }
+  .exploreSlider {
+    height: 18rem;
+  }
+  .slider-det {
+    left: 40%;
+    transform: translate(-50%, -40%);
+  }
+  .slider-det p {
+    font-size: 0.7rem;
+    padding: 0.6rem 1.2rem;
+  }
 }
 @media screen and (max-width: 300px) {
   :root {
@@ -111,5 +199,12 @@
   .categories p {
     margin: 0.4rem 0 0.4rem 0.2rem;
     font-size: 0.6rem;
+  }
+  .exploreSlider {
+    height: 15rem;
+  }
+  .slider-det p {
+    font-size: 0.6rem;
+    padding: 0.5rem 1rem;
   }
 }

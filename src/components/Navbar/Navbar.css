@@ -8,6 +8,7 @@
   height: 8rem;
   width: 100vw;
   background-color: #ffff;
+  z-index: 100;
 }
 .nav_links {
   width: 75%;

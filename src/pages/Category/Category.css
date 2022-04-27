@@ -1,10 +1,15 @@
-.cat {
-  margin: 2rem;
+#root > .cat {
+  margin: 2rem 0rem 2rem 2rem;
+  padding-right: 2rem;
+  height: calc(100vh - 11rem);
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 .listItem {
+  cursor: pointer;
   display: grid;
   max-width: max-content;
-  grid-template-columns: 1fr 2fr;
+  grid-template-columns: 1fr minmax(auto, 35rem);
   column-gap: 2rem;
   margin-top: 2rem;
   padding: 2rem;
@@ -16,7 +21,7 @@
   box-shadow: 0px 8px 10px 8px rgba(201, 200, 200, 0.486);
 }
 .house-img {
-  max-width: 16rem;
+  width: 16rem;
   max-height: 10rem;
   object-fit: cover;
   border-radius: 1rem;
@@ -47,15 +52,52 @@ li {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  width: 30rem;
 }
 .bedrooms p {
   font-size: 1.1rem;
   font-weight: 500;
 }
-.deleteIcon {
+.deleteIcon,
+.editIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.1rem;
+  height: 2.1rem;
+  cursor: pointer;
   position: absolute;
-  top: 1rem;
-  right: 1rem;
+  top: 1%;
+  border-radius: 50%;
+  background-color: #fff;
+}
+.deleteIcon svg,
+.editIcon svg {
+  width: 1.2rem;
+  height: 1.2rem;
+}
+.deleteIcon {
+  right: 1%;
+}
+.editIcon {
+  right: 6%;
+}
+.loadmore {
+  margin-top: 2rem;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+.loadmore button {
+  padding: 1.2rem 1.8rem;
+  border-radius: 1rem;
+  background-color: #2c2c2c;
+  color: #fff;
+  cursor: pointer;
+  transition: 0.5s ease-in;
+}
+.loadmore button:hover {
+  transform: scale(1.05);
 }
 @media screen and (max-width: 1050px) {
   .listItem {
@@ -67,7 +109,13 @@ li {
 }
 @media screen and (max-width: 950px) {
   .listItem {
+    grid-template-columns: 1fr minmax(15rem, 30rem);
+  }
+  .listItem {
     padding: 1.7rem;
+  }
+  .bedrooms {
+    width: 22rem;
   }
   .bedrooms p {
     font-size: 0.9rem;
@@ -79,24 +127,37 @@ li {
     font-size: 0.7rem;
   }
   .house-img {
-    max-width: 14rem;
+    width: 14rem;
     max-height: 8rem;
+  }
+  .deleteIcon,
+  .editIcon {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+  .deleteIcon svg,
+  .editIcon svg {
+    width: 0.8rem;
+    height: 0.8rem;
+  }
+  .loadmore button {
+    font-size: 0.9rem;
+    padding: 1.2rem 1.5rem;
   }
 }
 @media screen and (max-width: 650px) {
-  .deleteIcon {
-    max-width: 0.8rem;
-    max-height: 0.8rem;
-    top: 0.4rem;
-    right: 0.4rem;
-  }
   .cat {
     margin: 1.2rem;
   }
   .listItem {
     padding: 1.2rem;
     column-gap: 0.8rem;
-    grid-template-columns: 1fr 1fr;
+  }
+  .bedrooms {
+    width: 10rem;
+  }
+  .location {
+    font-weight: 500 !important;
   }
   .bedrooms p {
     font-size: 0.46rem;
@@ -111,12 +172,27 @@ li {
     font-size: 0.5rem;
   }
   .house-img {
-    max-width: 9rem;
+    width: 9rem;
     max-height: 6rem;
   }
   .bedrooms img {
     max-width: 0.7rem;
     max-height: 0.7rem;
+  }
+  .loadmore button {
+    font-size: 0.5rem;
+    padding: 0.9rem 1.2rem;
+    border-radius: 0.9rem;
+  }
+  .deleteIcon,
+  .editIcon {
+    width: 0.8rem;
+    height: 0.8rem;
+  }
+  .deleteIcon svg,
+  .editIcon svg {
+    width: 0.4rem;
+    height: 0.4rem;
   }
 }
 @media screen and (max-width: 450px) {
@@ -124,24 +200,29 @@ li {
     margin: 1rem;
   }
   .house-img {
-    max-width: 8rem;
+    width: 8rem;
     max-height: 5rem;
   }
   .listItem {
     column-gap: 0.8rem;
     grid-template-columns: 1fr 2fr;
   }
+  .loadmore button {
+    font-size: 0.5rem;
+    padding: 0.7rem 1rem;
+    border-radius: 0.7rem;
+  }
 }
 @media screen and (max-width: 400px) {
   .house-img {
-    max-width: 7rem;
+    width: 7rem;
     max-height: 4rem;
   }
 }
 @media screen and (max-width: 300px) {
   .house-img {
     grid-column: 1/-1;
-    max-width: 14rem;
+    width: 11.2rem;
     max-height: 5rem;
   }
   .listDet {
@@ -149,6 +230,22 @@ li {
   }
   .listItem {
     row-gap: 1rem;
+  }
+  .deleteIcon,
+  .editIcon {
+    width: 0.7rem;
+    height: 0.7rem;
+  }
+  .deleteIcon svg,
+  .editIcon svg {
+    width: 0.3rem;
+    height: 0.3rem;
+  }
+  .deleteIcon {
+    right: 10%;
+  }
+  .editIcon {
+    right: 17%;
   }
   .listDet {
     justify-content: space-between;

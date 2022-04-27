@@ -1,20 +1,26 @@
 import PropTypes from "prop-types";
 import { useState, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { useNavigate, useParams } from "react-router-dom";
+import { getAuth } from "firebase/auth";
 import {
   getStorage,
   ref,
   uploadBytesResumable,
   getDownloadURL,
 } from "firebase/storage";
-import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import {
+  deleteField,
+  doc,
+  getDoc,
+  serverTimestamp,
+  updateDoc,
+} from "firebase/firestore";
 import { db } from "../../firebase.config";
 import Spinner from "../../components/Spinner";
 import closeIcon from "../../assets/jpg/close.png";
 import "./CreateListing.css";
 import { toast } from "react-toastify";
-function CreateListing() {
+function EditListing() {
   const API_KEY = process.env.REACT_APP_API_KEY;
   const today = useRef(null);
   const mounted = useRef(true);
@@ -34,8 +40,10 @@ function CreateListing() {
     latitude: 0,
     longitude: 0,
   });
+  const [updatedForm, setUpdatedForm] = useState({});
   const auth = getAuth();
   const navigate = useNavigate();
+  const params = useParams();
   useEffect(() => {
     if (mounted) {
       const now = new Date();
@@ -45,19 +53,41 @@ function CreateListing() {
       if (dd < 10) dd = "0" + dd;
       if (mm < 10) mm = "0" + mm;
       today.current = `${dd}${mm}${yyyy}`;
-      onAuthStateChanged(auth, (user) => {
-        if (user) {
-          setFormData({ ...formData, userRef: user.uid });
-          setLoading(false);
-        } else {
-          navigate("/sign-in");
-        }
-      });
+      getDocument();
+      setLoading(false);
+    }
+    async function getDocument() {
+      const docSnap = await getDoc(doc(db, "listings", `${params.listingId}`));
+      const form = {
+        ...docSnap.data(),
+      };
+      const {
+        fileList: images,
+        geolocation: { lat: latitude, lng: longitude },
+        location: address,
+        imgUrls: imageUrls,
+      } = form;
+      form.images = images;
+      form.latitude = latitude;
+      form.longitude = longitude;
+      form.address = address;
+      form.imageUrls = imageUrls;
+      delete form.imgUrls;
+      delete form.geolocation;
+      delete form.location;
+      if (form.offer === false) {
+        form.discountedPrice = 1;
+      }
+      setFormData(form);
     }
     return () => (mounted.current = false);
     //eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mounted]);
   const onSubmit = async (e) => {
+    if (Object.keys(updatedForm).length === 0) {
+      navigate("/profile");
+      return;
+    }
     if (formData.images.length === 0) {
       toast.error("Please upload image");
       return;
@@ -65,56 +95,113 @@ function CreateListing() {
     try {
       setLoading(true);
       e.preventDefault();
-      const res = await fetch(
-        `https://maps.googleapis.com/maps/api/geocode/json?address=${formData.address}&key=${API_KEY}`
-      );
-      const data = await res.json();
       let lat;
       let lng;
       let location;
-      if (data.status === "ZERO_RESULTS") {
-        toast.error("Please enter a correct address");
-        setLoading(false);
-        return;
-      } else {
-        lat = data.results[0].geometry.location.lat ?? 0;
-        lng = data.results[0].geometry.location.lng ?? 0;
-        location = formData.address;
+      if (updatedForm.hasOwnProperty("address")) {
+        const res = await fetch(
+          `https://maps.googleapis.com/maps/api/geocode/json?address=${formData.address}&key=${API_KEY}`
+        );
+        const data = await res.json();
+        if (data.status === "ZERO_RESULTS") {
+          toast.error("Please enter a correct address");
+          setLoading(false);
+          return;
+        } else {
+          lat = data.results[0].geometry.location.lat ?? 0;
+          lng = data.results[0].geometry.location.lng ?? 0;
+          location = formData.address;
+        }
       }
-      const imgUrls = await Promise.all(
-        formData.images.map((file) => fileUpload(file[0]))
-      );
-
+      let imgUrls;
+      let fileArr;
+      let fileLists;
+      let fileList;
+      if (updatedForm.hasOwnProperty("images")) {
+        if (formData.fileList === null) {
+          imgUrls = await Promise.all(
+            formData.images.map((file) => fileUpload(file[0]))
+          );
+          fileArr = formData.images.map((file) => {
+            return {
+              name: file[0].name,
+              lastModified: file[0].lastModified,
+              lastModifiedDate: file[0].lastModifiedDate,
+              size: file[0].size,
+              type: file[0].type,
+              webkitRelativePath: file[0].webkitRelativePath,
+            };
+          });
+          fileList = fileArr.map((file) => {
+            return { 0: file, length: 1 };
+          });
+        } else {
+          let newImages = [];
+          formData.images.forEach((file) => {
+            let found = 0;
+            for (let i = 0; i < formData.fileList.length; i++) {
+              if (formData.fileList[i][0].name === file[0].name) {
+                found = 1;
+                break;
+              }
+            }
+            if (found === 0) {
+              newImages.push(file);
+            }
+          });
+          const urls = await Promise.all(
+            newImages.map((file) => fileUpload(file[0]))
+          );
+          imgUrls = [...formData.imageUrls, ...urls];
+          fileArr = newImages.map((file) => {
+            return {
+              name: file[0].name,
+              lastModified: file[0].lastModified,
+              lastModifiedDate: file[0].lastModifiedDate,
+              size: file[0].size,
+              type: file[0].type,
+              webkitRelativePath: file[0].webkitRelativePath,
+            };
+          });
+          fileLists = fileArr.map((file) => {
+            return { 0: file, length: 1 };
+          });
+          fileList = [...formData.fileList, ...fileLists];
+        }
+      }
       const uploadData = {
-        ...formData,
+        ...updatedForm,
         timestamp: serverTimestamp(),
         geolocation: { lat, lng },
         imgUrls,
         location,
+        fileList,
       };
-      const fileArr = formData.images.map((file) => {
-        return {
-          name: file[0].name,
-          lastModified: file[0].lastModified,
-          lastModifiedDate: file[0].lastModifiedDate,
-          size: file[0].size,
-          type: file[0].type,
-          webkitRelativePath: file[0].webkitRelativePath,
-        };
-      });
-      const fileList = fileArr.map((file) => {
-        return { 0: file, length: 1 };
-      });
-      uploadData.fileList = fileList;
       delete uploadData.address;
       delete uploadData.images;
       delete uploadData.longitude;
       delete uploadData.latitude;
-      !uploadData.offer && delete uploadData.discountedPrice;
-      const docRef = await addDoc(collection(db, "listings"), uploadData);
+      if (uploadData.hasOwnProperty("offer")) {
+        uploadData.offer
+          ? (uploadData.discountedPrice = formData.discountedPrice)
+          : delete uploadData.discountedPrice;
+        !uploadData.offer &&
+          (await updateDoc(doc(db, "listings", `${params.listingId}`), {
+            discountedPrice: deleteField(),
+          }));
+      }
+      if (location === undefined) {
+        delete uploadData.geolocation;
+        delete uploadData.location;
+      }
+      if (imgUrls === undefined) {
+        delete uploadData.imgUrls;
+        delete uploadData.fileList;
+      }
+      await updateDoc(doc(db, "listings", `${params.listingId}`), uploadData);
       setLoading(false);
-      toast.success("Listing successfully created!");
-      navigate(`/category/${uploadData.type}/${docRef.id}`);
+      toast.success("Listing successfully updated!");
+      navigate(`/category/${uploadData.type}/${params.listingId}`);
     } catch (error) {
       setLoading(false);
       toast(error);
@@ -175,6 +262,7 @@ function CreateListing() {
         return;
       }
     }
+    setUpdatedForm({ ...updatedForm, [key]: value });
     setFormData({ ...formData, [key]: value });
   };
   const deleteFile = (fileName) => {
@@ -182,7 +270,40 @@ function CreateListing() {
     const newArr = arr.filter((image) => {
       return image[0].name !== fileName;
     });
-    setFormData({ ...formData, images: newArr });
+    let ind;
+    let newFileList;
+    let newImageArr;
+    if (formData.fileList !== null) {
+      if (formData.fileList.length === 1) {
+        setFormData({
+          ...formData,
+          images: newArr,
+          fileList: null,
+          imageUrls: null,
+        });
+        setUpdatedForm({ ...updatedForm, images: newArr });
+      } else {
+        newFileList = formData.fileList.filter((file, index) => {
+          if (file[0].name === fileName) {
+            ind = index;
+          }
+          return file[0].name !== fileName;
+        });
+        newImageArr = formData.imageUrls.filter(
+          (image, index) => index !== ind
+        );
+        setFormData({
+          ...formData,
+          images: newArr,
+          fileList: newFileList,
+          imageUrls: newImageArr,
+        });
+        setUpdatedForm({ ...updatedForm, images: newArr });
+      }
+    } else {
+      setFormData({ ...formData, images: newArr });
+      setUpdatedForm({ ...updatedForm, images: newArr });
+    }
   };
   const onMutate = (e) => {
     if (e.target.id === "images") {
@@ -207,7 +328,7 @@ function CreateListing() {
       {loading && <Spinner />}
       <div className="create-list-form">
         <header>
-          <h1>Create Listing</h1>
+          <h1>Edit Listing</h1>
         </header>
         <main>
           <form onSubmit={onSubmit}>
@@ -320,10 +441,10 @@ function CreateListing() {
                     max={750000000}
                   />
                   {formData.type === "rent" ? (
-                    <p>&#8377;/Month</p>
-                  ) : (
-                    <p>&#8377;</p>
-                  )}
+                  <p>&#8377;/Month</p>
+                ) : (
+                  <p>&#8377;</p>
+                )}
                 </div>
               </div>
             )}
@@ -361,7 +482,7 @@ function CreateListing() {
               </div>
             </div>
             <button className="crlist-submit-btn" type="submit">
-              Create Listing
+              Edit Listing
             </button>
           </form>
         </main>
@@ -425,4 +546,4 @@ FormYNbtn.defaultProps = {
   text1: "Yes",
   text2: "No",
 };
-export default CreateListing;
+export default EditListing;
